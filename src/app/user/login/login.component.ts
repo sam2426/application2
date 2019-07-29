@@ -45,13 +45,13 @@ export class LoginComponent implements OnInit {
           this.cookie.set('receiverName', apiResponse.data.userDetails.firstName + ' ' + apiResponse.data.userDetails.lastName);
           this.appService.setUserInfoInLocalStorage(apiResponse.data.userDetails);
           this.router.navigate(['/chat']);
-        } else if (apiResponse.status === 400){
+        } else if (apiResponse.status === 404){
           console.log("hello");
          // this.toastr.error(apiResponse.message);
         }
       },
-        (err) => {
-          console.log(err);
+        (error) => {
+          console.log(error);
           // this.toastr.error(err);
         }
       )}

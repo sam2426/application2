@@ -157,8 +157,10 @@ export class ChatBoxComponent implements OnInit {
         this.messageList=previousData;
         this.toastr.warning('No Messages Availbale');
       }
-    })
-  }
+    },(err) => {
+      this.toastr.error('some error occured')
+    });
+  }// end get previous chat with any user
 
   public loadEarlierPageOfChat:any=()=>{
     this.loadingPreviousChat=true;
@@ -166,5 +168,32 @@ export class ChatBoxComponent implements OnInit {
     this.scrollToChatTop=true;
     this.getPreviousChatWithAUser();
   }//end of loadPreviousChat
+
+  public logout: any = () => {
+
+    this.appService.logout()
+      .subscribe((apiResponse) => {
+
+        if (apiResponse.status === 200) {
+          console.log("logout called")
+          this.cookies.delete('authtoken');
+
+          this.cookies.delete('receiverId');
+
+          this.cookies.delete('receiverName');
+
+          this.socket.exitSocket()
+
+          this.router.navigate(['/']);
+
+        } else {
+          this.toastr.error(apiResponse.message)
+        } // end condition
+
+      }, (err) => {
+        this.toastr.error('some error occured')
+      });
+
+  } // end logout
 
 }

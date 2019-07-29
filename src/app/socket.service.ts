@@ -98,4 +98,8 @@ public chatByUserId = (userId) => {
     console.error(errorMessage);
     return Observable.throw(errorMessage);
   }//end of handleError.
+
+  public exitSocket = () =>{
+    this.socket.disconnect();
+  }// end exit socket
 }

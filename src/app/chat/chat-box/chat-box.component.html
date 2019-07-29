@@ -26,11 +26,13 @@
                     <li class="p-2 typeOfChats">
                         Online Users:
                     </li>
-                    <!-- <li class="clearfix cursorPointer" [ngClass]="{'activeChat': user.chatting == true}" (click)="userSelectedToChat(user.userId, user.name)" *ngFor="let user of userList">
+                    <li class="clearfix cursorPointer" [ngClass]="{'activeChat': user.chatting == true}" (click)="userSelectedToChat(user.userId, user.name)" *ngFor="let user of userList">
+
                         <div class="userPresence" *ngIf="user.userId != userInfo.userId">
                             <user-details [userFirstName]="user.name" [userLastName]="''" [userStatus]="'online'" [messageRead]="user.unread"></user-details>
                         </div>
-                    </li> -->
+
+                    </li>
             
                 </ul>
             
