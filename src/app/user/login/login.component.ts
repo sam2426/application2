@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '../../../../node_modules/@angular/router';
-import { ToastrService } from '../../../../node_modules/ngx-toastr';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AppService } from '../../app.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -35,11 +36,11 @@ export class LoginComponent implements OnInit {
         password: this.password
       }
       console.log(data);
-      this.appService.signinFunction(data).subscribe((apiResponse) => {
+     this.appService.signinFunction(data).subscribe((apiResponse) => {
         if (apiResponse.status === 200) {
           // this.router.navigate([]);
           this.toastr.success('hurray!!');
-          console.log(apiResponse);
+         console.log(apiResponse);
           this.cookie.set('authToken', apiResponse.data.authToken);
           this.cookie.set('receiverId', apiResponse.data.userDetails.userId);
           this.cookie.set('receiverName', apiResponse.data.userDetails.firstName + ' ' + apiResponse.data.userDetails.lastName);
@@ -51,11 +52,26 @@ export class LoginComponent implements OnInit {
         }
       },
         (error) => {
-          console.log(error);
+          console.log('errorzzzz');
           // this.toastr.error(err);
         }
       )}
   }
+
+  // public signinFunction: any = () => {
+  //   let data = {
+  //       email: this.email,
+  //       password: this.password
+  //     }
+  //     this.appService.signinFunction(data)
+  //     .pipe(first())
+  //     .subscribe(apiResponse =>{
+  //       console.log(apiResponse);
+  //     },
+  //   error=>{
+  //     console.log(error);
+  //   })
+  // }
 
 }
 

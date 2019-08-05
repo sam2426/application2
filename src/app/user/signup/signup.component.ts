@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent implements OnInit {
 
-  public firstName:any;
+  public firsName:any;
   public lastName:any;
   public mobile:any;
   public email:any;
@@ -31,7 +31,7 @@ export class SignupComponent implements OnInit {
   }
 
   public signUpFunction: any=()=> {
-    if(!this.firstName){
+    if(!this.firsName){
       this.toastr.warning('enter first name');
     }else if(!this.lastName){
       this.toastr.warning('enter last name');
@@ -45,7 +45,7 @@ export class SignupComponent implements OnInit {
       this.toastr.warning('enter apikey');
     }else{
       let data={
-        firstName:this.firstName,
+        firstName:this.firsName,
         lastName:this.lastName,
         mobile:this.mobile,
         email:this.email,
@@ -54,22 +54,22 @@ export class SignupComponent implements OnInit {
       }
       console.log(data);
 
-      this.appService.signupFunction(data).subscribe((apiResponse)=>{ //apiResponse is catching the observable data.
-        console.log(apiResponse);
+    //   this.appService.signupFunction(data).subscribe((apiResponse)=>{ //apiResponse is catching the observable data.
+    //     console.log(apiResponse);
 
-        if (apiResponse.status===200){
-          this.toastr.success('SignUp Successfully');
+    //     if (apiResponse.status===200){
+    //       this.toastr.success('SignUp Successfully');
 
-          this.goToSignIn();  // after signup redirecting to signin, ngs toaster still shows after 
-                              //refreshing so no need for timeout.
-        }
-        else{
-          this.toastr.error(apiResponse.message);
-        }
-      },
-    (err)=>{
-      this.toastr.error('Some error occured');
-    });
+    //       this.goToSignIn();  // after signup redirecting to signin, ngx toaster still shows after 
+    //                           //refreshing so no need for timeout.
+    //     }
+    //     else{
+    //       this.toastr.error(apiResponse.message);
+    //     }
+    //   },
+    // (err)=>{
+    //   this.toastr.error('Some error occured');
+    // });
 
     }
 

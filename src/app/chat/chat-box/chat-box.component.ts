@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppService } from '../../app.service';
 import { SocketService } from '../../socket.service';
 import { ToastrService } from 'node_modules/ngx-toastr';
 import { CookieService } from 'node_modules/ngx-cookie-service';
 import { Router } from 'node_modules/@angular/router';
+import { chatMessage } from './chat';
 
 
 @Component({
@@ -13,6 +14,11 @@ import { Router } from 'node_modules/@angular/router';
   providers: [SocketService]
 })
 export class ChatBoxComponent implements OnInit {
+
+  @ViewChild('scrollMe', {read: ElementRef, static:false})
+  public scrollMe:ElementRef;
+  
+
 
   public authToken:any;
   public userInfo:any;
@@ -42,7 +48,7 @@ export class ChatBoxComponent implements OnInit {
   ngOnInit() {
 
     this.authToken=this.cookies.get('authToken');
-    this.userInfo=this.appService.getUserInfoFromLocalStorage();
+    //this.userInfo=this.appService.getUserInfoFromLocalStorage();
 
     if(this.receiverId!=null && this.receiverId!=undefined && this.receiverId!=""){
       this.userSelectedToChat(this.receiverId,this.receiverName);
@@ -93,7 +99,7 @@ export class ChatBoxComponent implements OnInit {
 
   public sendMessage:any=()=>{
     if(this.messageText){
-      let chatMsgObject={
+      let chatMsgObject:chatMessage={
         senderName: this.userInfo.firstName + " " + this.userInfo.lastName,
         senderId: this.userInfo.userId,
         receiverName: this.cookies.get('receiverName'),
@@ -169,31 +175,36 @@ export class ChatBoxComponent implements OnInit {
     this.getPreviousChatWithAUser();
   }//end of loadPreviousChat
 
-  public logout: any = () => {
+  // public logout: any = () => {
 
-    this.appService.logout()
-      .subscribe((apiResponse) => {
+  //   this.appService.logout()
+  //     .subscribe((apiResponse) => {
 
-        if (apiResponse.status === 200) {
-          console.log("logout called")
-          this.cookies.delete('authtoken');
+  //       if (apiResponse.status === 200) {
+  //         console.log("logout called")
+  //         this.cookies.delete('authtoken');
 
-          this.cookies.delete('receiverId');
+  //         this.cookies.delete('receiverId');
 
-          this.cookies.delete('receiverName');
+  //         this.cookies.delete('receiverName');
 
-          this.socket.exitSocket()
+  //         this.socket.exitSocket()
 
-          this.router.navigate(['/']);
+  //         this.router.navigate(['/']);
 
-        } else {
-          this.toastr.error(apiResponse.message)
-        } // end condition
+  //       } else {
+  //         this.toastr.error(apiResponse.message)
+  //       } // end condition
 
-      }, (err) => {
-        this.toastr.error('some error occured')
-      });
+  //     }, (err) => {
+  //       this.toastr.error('some error occured')
+  //     });
 
-  } // end logout
+  // } // end logout
+
+  //handling output from child componenet
+  public showUserName=(name:string)=>{
+    this.toastr.success("You are chatting with " + name);
+  }
 
 }
