@@ -48,7 +48,7 @@ export class ChatBoxComponent implements OnInit {
   ngOnInit() {
 
     this.authToken=this.cookies.get('authToken');
-    //this.userInfo=this.appService.getUserInfoFromLocalStorage();
+    this.userInfo=this.appService.getUserInfoFromLocalStorage();
 
     if(this.receiverId!=null && this.receiverId!=undefined && this.receiverId!=""){
       this.userSelectedToChat(this.receiverId,this.receiverName);
@@ -119,14 +119,14 @@ export class ChatBoxComponent implements OnInit {
   public pushToChatWindow:any=(data)=>{
     this.messageText="";
     this.messageList.push(data);
-    //this.scrollToChatTop=false;
+    this.scrollToChatTop=false;
   }
 
   public getMessageFromAUser:any=()=>{
     this.socket.chatByUserId(this.userInfo.userId).subscribe((data)=>{
       (this.receiverId==data.senderId)?this.messageList.push(data):'';
       this.toastr.success(`${data.senderName} says : ${data.message}`);
-      //this.scrollToChatTop=false;
+      this.scrollToChatTop=false;
     });
   }
 
@@ -175,32 +175,32 @@ export class ChatBoxComponent implements OnInit {
     this.getPreviousChatWithAUser();
   }//end of loadPreviousChat
 
-  // public logout: any = () => {
+  public logout: any = () => {
 
-  //   this.appService.logout()
-  //     .subscribe((apiResponse) => {
+    this.appService.logout()
+      .subscribe((apiResponse) => {
 
-  //       if (apiResponse.status === 200) {
-  //         console.log("logout called")
-  //         this.cookies.delete('authtoken');
+        if (apiResponse.status === 200) {
+          console.log("logout called")
+          this.cookies.delete('authtoken');
 
-  //         this.cookies.delete('receiverId');
+          this.cookies.delete('receiverId');
 
-  //         this.cookies.delete('receiverName');
+          this.cookies.delete('receiverName');
 
-  //         this.socket.exitSocket()
+          this.socket.exitSocket()
 
-  //         this.router.navigate(['/']);
+          this.router.navigate(['/']);
 
-  //       } else {
-  //         this.toastr.error(apiResponse.message)
-  //       } // end condition
+        } else {
+          this.toastr.error(apiResponse.message)
+        } // end condition
 
-  //     }, (err) => {
-  //       this.toastr.error('some error occured')
-  //     });
+      }, (err) => {
+        this.toastr.error('some error occured')
+      });
 
-  // } // end logout
+  } // end logout
 
   //handling output from child componenet
   public showUserName=(name:string)=>{
